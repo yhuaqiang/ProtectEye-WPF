@@ -4,10 +4,10 @@ using System.Text;
 
 namespace ProtectEye.conf
 {
-    class Config
+    public class Config
     {
         private string password = "我认怂";
-        private decimal duration = 50;
+        private int duration = 50;
         private bool desktop = true;
         private bool autoStart = false;
 
@@ -23,7 +23,7 @@ namespace ProtectEye.conf
             }
         }
 
-        public decimal Duration
+        public int Duration
         {
             get
             {

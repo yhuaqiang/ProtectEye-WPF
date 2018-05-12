@@ -25,6 +25,9 @@ namespace ProtectEye
         private Forms.NotifyIcon notifyIcon;
 
         private Config config;
+
+        public Config Config { get { return this.config; } }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -41,6 +44,9 @@ namespace ProtectEye
         {
             this.config = ConfigHelper.Load();
             this.ShowInTaskbar = false;
+            this.lblPassword.Content = string.Format("当前密码: {0}", this.config.Password);
+            this.lblDuration.Content = string.Format("当前间隔: {0}", this.config.Duration);
+            this.sldDuration.Value = Convert.ToDouble(this.config.Duration);
         }
 
         private void InitNofityIcon()
@@ -80,6 +86,19 @@ namespace ProtectEye
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
+            if (true == this.cbPassword.IsChecked)
+            {
+                string pswd = this.tbPassword.Text.Trim();
+                if (string.IsNullOrEmpty(pswd))
+                {
+                    this.tbPassword.Focus();
+                    return;
+                }
+                this.config.Password = pswd;
+            }
+            this.config.Duration = Convert.ToInt32(this.sldDuration.Value);
+            this.config.IsShowDesktop = (bool)this.cbDesktop.IsChecked;
+            this.config.IsAutoStart = (bool)this.cbAutoStart.IsChecked;
             ConfigHelper.Save(this.config);
             this.Hide();
         }
@@ -87,6 +106,28 @@ namespace ProtectEye
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
+        }
+
+        private void checkbox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender == this.cbPassword)
+            {
+                if (true == this.cbPassword.IsChecked)
+                {
+                    this.tbPassword.Focus();
+                }
+                else
+                {
+                    this.tbPassword.Clear();
+                }
+            }
+            else if (sender == this.cbDuration)
+            {
+                if (false == this.cbDuration.IsChecked)
+                {
+                    this.sldDuration.Value = Convert.ToDouble(this.config.Duration);
+                }
+            }
         }
 
 

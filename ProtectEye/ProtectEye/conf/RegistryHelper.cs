@@ -23,7 +23,7 @@ namespace ProtectEye.conf
             }
             else
             {
-                aaKey.DeleteValue("ProtectEye");
+                aaKey.DeleteValue("ProtectEye", false);
             }
         }
     }

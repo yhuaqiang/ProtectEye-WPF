@@ -68,7 +68,7 @@ namespace ProtectEye.conf
                 val = ProfileReadValue("duration");
                 if (!String.IsNullOrEmpty(val))
                 {
-                    c.Duration = Convert.ToDecimal(val);
+                    c.Duration = Convert.ToInt32(val);
                 }
             }
             catch (Exception)
