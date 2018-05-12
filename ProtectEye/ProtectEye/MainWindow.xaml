@@ -5,7 +5,7 @@
         Title="MainWindow" Height="531" Width="431" WindowStyle="None" 
     ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown" Loaded="Window_Loaded"
         >
     <Grid Background="#33000000">
         <StackPanel Margin="50,30">
