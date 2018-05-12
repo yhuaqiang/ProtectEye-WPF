@@ -14,9 +14,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ProtectEye
 {
+
+    public delegate void DoMonitor();
+    
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
@@ -24,9 +28,12 @@ namespace ProtectEye
     {
         private Forms.NotifyIcon notifyIcon;
 
+        private DispatcherTimer timer;
+
         private Config config;
 
-        public Config Config { get { return this.config; } }
+        private LockWindow lockWindow = new LockWindow();
+
 
         public MainWindow()
         {
@@ -36,8 +43,9 @@ namespace ProtectEye
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.InitNofityIcon();
             this.Init();
+            this.InitNofityIcon();
+            this.InitTimer();
         }
 
         private void Init()
@@ -47,12 +55,16 @@ namespace ProtectEye
             this.lblPassword.Content = string.Format("当前密码: {0}", this.config.Password);
             this.lblDuration.Content = string.Format("当前间隔: {0}", this.config.Duration);
             this.sldDuration.Value = Convert.ToDouble(this.config.Duration);
+            //
+            this.lockWindow.doMonitor = () =>
+            {
+                this.StartMonitor();
+            };
         }
 
         private void InitNofityIcon()
         {
             this.notifyIcon = new Forms.NotifyIcon();
-            this.notifyIcon.Visible = true;
             this.notifyIcon.Icon = Properties.Resources.System;
             this.notifyIcon.MouseClick += (sender, e) =>
             {
@@ -79,6 +91,25 @@ namespace ProtectEye
             menu.MenuItems.Add(exitItem);
             this.notifyIcon.ContextMenu = menu;
         }
+
+        private void ShowNotifyIcon()
+        {
+            this.notifyIcon.Visible = true;
+        }
+        private void InitTimer()
+        {
+            this.timer = new DispatcherTimer();
+            this.timer.Tick += (sender, e) =>
+            {
+                // 
+                this.StopMonitor();
+                //
+                this.lockWindow.Lock();
+                //
+
+            };
+
+        }
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
@@ -101,10 +132,28 @@ namespace ProtectEye
             this.config.IsAutoStart = (bool)this.cbAutoStart.IsChecked;
             ConfigHelper.Save(this.config);
             this.Hide();
+            this.StartMonitor();
+            this.ShowNotifyIcon();
         }
 
+        private void StartMonitor()
+        {
+            this.StopMonitor();
+            Console.WriteLine("start monitor");
+            this.timer.Interval = TimeSpan.FromMinutes(Convert.ToDouble(this.config.Duration));
+            this.timer.Interval = TimeSpan.FromSeconds(5f);
+            this.timer.Start();
+            this.notifyIcon.ShowBalloonTip(5000, "Y(^_^)Y", string.Format("{0}钟之后要休息下~", this.config.Duration), Forms.ToolTipIcon.Info);
+        }
+
+        private void StopMonitor()
+        {
+            Console.WriteLine("stop monitor");
+            this.timer.Stop();
+        }
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            this.ShowNotifyIcon();
             this.Hide();
         }
 
