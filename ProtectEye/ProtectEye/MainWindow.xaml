@@ -14,7 +14,7 @@
                 <Grid>
                     <CheckBox x:Name="cbPassword" Content="更改解锁密码" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" Height="27" Width="102" Checked="checkbox_Checked" Unchecked="checkbox_Checked"/>
                     <Label x:Name="lblPassword" Content="当前密码: " Margin="130,10,57,78"/>
-                    <TextBox x:Name="tbPassword" IsEnabled="{Binding ElementName=cbPassword,Path=IsChecked}" HorizontalAlignment="Left" Height="30" Margin="29,47,0,0"  VerticalAlignment="Top" Width="258"/>
+                    <TextBox x:Name="tbPassword"  HorizontalAlignment="Left" Height="30" Margin="29,47,0,0"  VerticalAlignment="Top" Width="258"/>
                 </Grid>
             </GroupBox>
             <GroupBox Header="护眼间隔" Height="122">

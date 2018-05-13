@@ -48,16 +48,24 @@ namespace ProtectEye
             this.InitNofityIcon();
             this.InitTimer();
         }
-
-        private void Init()
+        private void InitConfig()
         {
-            this.config = ConfigHelper.Load();
-            this.ShowInTaskbar = false;
+            this.cbPassword.IsChecked = false;
+            this.tbPassword.IsEnabled = (bool)this.cbPassword.IsChecked;
             this.lblPassword.Content = string.Format("当前密码: {0}", this.config.Password);
             this.lblDuration.Content = string.Format("当前间隔: {0}", this.config.Duration);
             this.sldDuration.Value = Convert.ToDouble(this.config.Duration);
             this.cbDesktop.IsChecked = this.config.IsShowDesktop;
             this.cbAutoStart.IsChecked = this.config.IsAutoStart;
+        }
+        private void Init()
+        {
+            this.Topmost = true;
+            this.ShowInTaskbar = false;
+            //
+            this.config = ConfigHelper.Load();
+            this.InitConfig();
+            
             //事件
             this.Closing += (sender, e) =>
             {
@@ -143,6 +151,7 @@ namespace ProtectEye
             this.config.IsAutoStart = (bool)this.cbAutoStart.IsChecked;
             ConfigHelper.Save(this.config);
             //
+            this.InitConfig();
             this.Hide();
             this.StartMonitor();
         }
@@ -171,6 +180,7 @@ namespace ProtectEye
         {
             if (sender == this.cbPassword)
             {
+                this.tbPassword.IsEnabled = (bool)this.cbPassword.IsChecked;
                 if (true == this.cbPassword.IsChecked)
                 {
                     this.tbPassword.Focus();
