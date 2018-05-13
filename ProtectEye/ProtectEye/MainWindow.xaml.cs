@@ -163,7 +163,7 @@ namespace ProtectEye
             this.notifyIcon.ShowBalloonTip(5000, "Y(^_^)Y", string.Format("{0}钟之后要休息下~", this.config.Duration), Forms.ToolTipIcon.Info);
             this.timer.Interval = TimeSpan.FromMinutes(Convert.ToDouble(this.config.Duration));
             this.timer.Interval = TimeSpan.FromSeconds(5f);
-            //this.timer.Start();
+            this.timer.Start();
         }
 
         private void StopMonitor()
