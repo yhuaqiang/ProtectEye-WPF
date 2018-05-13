@@ -88,6 +88,7 @@ namespace ProtectEye
             this.cbPassword.IsChecked = false;
             this.tbPassword.IsEnabled = (bool)this.cbPassword.IsChecked;
             this.lblPassword.Content = string.Format("当前密码: {0}", this.config.Password);
+            this.cbDuration.IsChecked = false;
             this.lblDuration.Content = string.Format("当前间隔: {0}", this.config.Duration);
             this.sldDuration.Value = Convert.ToDouble(this.config.Duration);
             this.cbDesktop.IsChecked = this.config.IsShowDesktop;
@@ -162,7 +163,7 @@ namespace ProtectEye
         {
             this.notifyIcon.Visible = false;
         }
-       private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
         }
@@ -178,7 +179,10 @@ namespace ProtectEye
                 }
                 this.config.Password = pswd;
             }
-            this.config.Duration = Convert.ToInt32(this.sldDuration.Value);
+            if (true == this.cbDuration.IsChecked)
+            {
+                this.config.Duration = Convert.ToInt32(this.sldDuration.Value);
+            }
             this.config.IsShowDesktop = (bool)this.cbDesktop.IsChecked;
             this.config.IsAutoStart = (bool)this.cbAutoStart.IsChecked;
             ConfigHelper.Save(this.config);
@@ -207,7 +211,8 @@ namespace ProtectEye
             Console.WriteLine("stop monitor");
             this.timerMonitor.Stop();
         }
-        private void StopAutoClick(){
+        private void StopAutoClick()
+        {
             this.timerAutoClick.Stop();
             this.btnStart.Content = "开始";
         }
