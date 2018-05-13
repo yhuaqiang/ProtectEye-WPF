@@ -101,6 +101,8 @@ namespace ProtectEye
                 this.RefreshCountDown();
                 this.timer.Start();
                 this.tbPassword.Focus();
+                //
+                Hooker.StartHook();
             }
             catch (Exception ex)
             {
@@ -115,8 +117,9 @@ namespace ProtectEye
                 this.timer.Stop();
                 this.Hide();
             }
-            catch (Exception ex)
+            finally
             {
+                Hooker.StopHook();
             }
             try
             {
