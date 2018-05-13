@@ -12,14 +12,14 @@
             <Label Content="护眼小贴士Y^-^Y" HorizontalAlignment="Center" FontSize="20"  Height="40"/>
             <GroupBox Header="解锁密码" Height="138">
                 <Grid>
-                    <CheckBox x:Name="cbPassword" Content="更改解锁密码" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" Height="27" Width="102" Checked="checkbox_Checked" Unchecked="checkbox_Checked"/>
+                    <CheckBox x:Name="cbPassword" Content="更改解锁密码" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" Height="27" Width="102"/>
                     <Label x:Name="lblPassword" Content="当前密码: " Margin="130,10,57,78"/>
                     <TextBox x:Name="tbPassword"  HorizontalAlignment="Left" Height="30" Margin="29,47,0,0"  VerticalAlignment="Top" Width="258"/>
                 </Grid>
             </GroupBox>
             <GroupBox Header="护眼间隔" Height="122">
                 <Grid>
-                    <CheckBox x:Name="cbDuration" Content="更改护眼间隔" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="27" Width="102" Checked="checkbox_Checked" Unchecked="checkbox_Checked"/>
+                    <CheckBox x:Name="cbDuration" Content="更改护眼间隔" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="27" Width="102" />
                     <Label x:Name="lblDuration" Content="当前间隔:" HorizontalAlignment="Left" Margin="177,10,0,0" VerticalAlignment="Top" Height="26" Width="107"/>
                     <Slider x:Name="sldDuration" IsEnabled="{Binding ElementName=cbDuration,Path=IsChecked}" HorizontalAlignment="Left" Margin="24,52,0,0" VerticalAlignment="Top" Width="232" Maximum="90" Minimum="1" SmallChange="1" LargeChange="10" Value="50" AutoToolTipPlacement="TopLeft" IsMoveToPointEnabled="True" IsSnapToTickEnabled="True"/>
                     <Label Content="{Binding ElementName=sldDuration,Path=Value}" HorizontalAlignment="Left" Margin="272,52,0,0" VerticalAlignment="Top" Height="29" Width="37" RenderTransformOrigin="6.027,0.966"/>

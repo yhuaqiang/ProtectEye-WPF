@@ -65,6 +65,15 @@ namespace ProtectEye
                 e.Cancel = true;
                 this.Hide();
             };
+            // checkbox事件
+            this.cbPassword.Checked += this.checkbox_Checked;
+            this.cbPassword.Unchecked += this.checkbox_Checked;
+            this.cbDuration.Checked += this.checkbox_Checked;
+            this.cbDuration.Unchecked += this.checkbox_Checked;
+            this.cbDesktop.Checked += this.checkbox_Checked;
+            this.cbDesktop.Unchecked += this.checkbox_Checked;
+            this.cbAutoStart.Checked += this.checkbox_Checked;
+            this.cbAutoStart.Unchecked += this.checkbox_Checked;
             //向子窗口传递委托
             this.lockWindow = new LockWindow(this.config);
             this.lockWindow.doMonitor = () =>
@@ -120,7 +129,6 @@ namespace ProtectEye
                 //
                 this.lockWindow.Lock();
                 //
-
             };
 
         }
