@@ -51,18 +51,32 @@ namespace ProtectEye.hook
 
         public void UnHook()
         {
-            Win32Api.UnhookWindowsHookEx(hHook);
+            try
+            {
+                Win32Api.UnhookWindowsHookEx(hHook);
+            }
+            catch (Exception e)
+            {
+                
+            }
         }
 
         private int MouseHookProc(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            Win32Api.MouseHookStruct mouseHookStruct =
-                (Win32Api.MouseHookStruct)Marshal.PtrToStructure(lParam, typeof(Win32Api.MouseHookStruct));
-            if (nCode >= 0)
+            try
             {
-                this.Point = new Point(mouseHookStruct.pt.x, mouseHookStruct.pt.y);
+                Win32Api.MouseHookStruct mouseHookStruct =
+              (Win32Api.MouseHookStruct)Marshal.PtrToStructure(lParam, typeof(Win32Api.MouseHookStruct));
+                if (nCode >= 0)
+                {
+                    this.Point = new Point(mouseHookStruct.pt.x, mouseHookStruct.pt.y);
+                }
+                return Win32Api.CallNextHookEx(hHook, nCode, wParam, lParam);
             }
-            return Win32Api.CallNextHookEx(hHook, nCode, wParam, lParam);
+            catch(Exception e)
+            {
+                return 0;
+            }
         }
     }
 }

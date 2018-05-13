@@ -188,7 +188,7 @@ namespace ProtectEye
             Console.WriteLine("start monitor");
             this.notifyIcon.ShowBalloonTip(5000, "Y(^_^)Y", string.Format("{0}钟之后要休息下~", this.config.Duration), Forms.ToolTipIcon.Info);
             this.timerMonitor.Interval = TimeSpan.FromMinutes(Convert.ToDouble(this.config.Duration));
-            this.timerMonitor.Interval = TimeSpan.FromSeconds(3f);
+            //this.timerMonitor.Interval = TimeSpan.FromSeconds(3f);
             this.timerMonitor.Start();
         }
 

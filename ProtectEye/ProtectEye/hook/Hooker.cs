@@ -12,8 +12,12 @@ namespace ProtectEye.hook
         MouseHook mouseHook = new MouseHook();
 
 
-        public static Hooker GetInstance() {
-            return hooker; 
+        private bool isMouseHookEnabled = false;
+        private bool isKeyMouseHookEnabled = false;
+
+        public static Hooker GetInstance()
+        {
+            return hooker;
         }
         private void StartMouseHook()
         {
@@ -38,15 +42,27 @@ namespace ProtectEye.hook
         public void StartHook()
         {
             Console.WriteLine("start hook");
-            this.StartMouseHook();
-            this.StartKeyHook();
+            if (this.isMouseHookEnabled)
+            {
+                this.StartMouseHook();
+            }
+            if (this.isKeyMouseHookEnabled)
+            {
+                this.StartKeyHook();
+            }
         }
 
         public void StopHook()
         {
             Console.WriteLine("stop hook");
-            this.StopMouseHook();
-            this.StopKeyHook();
+            if (this.isMouseHookEnabled)
+            {
+                this.StopMouseHook();
+            }
+            if (this.isKeyMouseHookEnabled)
+            {
+                this.StopKeyHook();
+            }
         }
     }
 }
