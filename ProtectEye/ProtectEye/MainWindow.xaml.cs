@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Reflection;
 
 namespace ProtectEye
 {
@@ -75,6 +76,10 @@ namespace ProtectEye
             this.lockWindow = new LockWindow(this.config);
             this.lockWindow.doMonitor = () =>
             {
+                if (this.config.IsShowDesktop)
+                {
+                    this.ToggleDesktop(false);
+                }
                 this.StartMonitor();
             };
         }
@@ -123,6 +128,11 @@ namespace ProtectEye
             {
                 // 
                 this.StopMonitor();
+                // 显示桌面
+                if (this.config.IsShowDesktop)
+                {
+                    this.ToggleDesktop(true);
+                }
                 //
                 this.lockWindow.Lock();
                 //
@@ -188,7 +198,7 @@ namespace ProtectEye
             Console.WriteLine("start monitor");
             this.notifyIcon.ShowBalloonTip(5000, "Y(^_^)Y", string.Format("{0}钟之后要休息下~", this.config.Duration), Forms.ToolTipIcon.Info);
             this.timerMonitor.Interval = TimeSpan.FromMinutes(Convert.ToDouble(this.config.Duration));
-            //this.timerMonitor.Interval = TimeSpan.FromSeconds(3f);
+            //this.timerMonitor.Interval = TimeSpan.FromSeconds(5f);
             this.timerMonitor.Start();
         }
 
@@ -238,6 +248,11 @@ namespace ProtectEye
             this.HideNotifyIcon();
             System.Environment.Exit(System.Environment.ExitCode);
         }
-
+        private void ToggleDesktop(bool show)
+        {
+            Type oleType = Type.GetTypeFromProgID("Shell.Application");
+            object oleObject = Activator.CreateInstance(oleType);
+            oleType.InvokeMember("ToggleDesktop", BindingFlags.InvokeMethod, null, oleObject, null);
+        }
     }
 }

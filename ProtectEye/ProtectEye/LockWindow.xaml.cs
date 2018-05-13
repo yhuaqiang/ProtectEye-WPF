@@ -101,7 +101,7 @@ namespace ProtectEye
                 this.tmpWaitDuration = this.waitDuration;
                 this.RefreshCountDown();
                 this.timer.Start();
-                this.tbPassword.Focus();
+                this.tbPassword.Visibility = Visibility.Hidden;
                 //
                 Hooker.GetInstance().StartHook();
             }
