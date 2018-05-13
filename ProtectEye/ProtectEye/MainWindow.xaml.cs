@@ -21,7 +21,7 @@ namespace ProtectEye
 
     // 通过委托实现消息传递,注意位置
     public delegate void DoMonitor();
-    
+
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
@@ -29,7 +29,8 @@ namespace ProtectEye
     {
         private Forms.NotifyIcon notifyIcon;
 
-        private DispatcherTimer timer;
+        private DispatcherTimer timerMonitor = new DispatcherTimer();
+        private DispatcherTimer timerAutoClick = new DispatcherTimer();
 
         private Config config;
 
@@ -46,17 +47,8 @@ namespace ProtectEye
         {
             this.Init();
             this.InitNofityIcon();
-            this.InitTimer();
-        }
-        private void InitConfig()
-        {
-            this.cbPassword.IsChecked = false;
-            this.tbPassword.IsEnabled = (bool)this.cbPassword.IsChecked;
-            this.lblPassword.Content = string.Format("当前密码: {0}", this.config.Password);
-            this.lblDuration.Content = string.Format("当前间隔: {0}", this.config.Duration);
-            this.sldDuration.Value = Convert.ToDouble(this.config.Duration);
-            this.cbDesktop.IsChecked = this.config.IsShowDesktop;
-            this.cbAutoStart.IsChecked = this.config.IsAutoStart;
+            this.InitMonitorTimer();
+            this.InitAutoClickTimer();
         }
         private void Init()
         {
@@ -65,7 +57,7 @@ namespace ProtectEye
             //
             this.config = ConfigHelper.Load();
             this.InitConfig();
-            
+
             //事件
             this.Closing += (sender, e) =>
             {
@@ -80,7 +72,16 @@ namespace ProtectEye
                 this.StartMonitor();
             };
         }
-
+        private void InitConfig()
+        {
+            this.cbPassword.IsChecked = false;
+            this.tbPassword.IsEnabled = (bool)this.cbPassword.IsChecked;
+            this.lblPassword.Content = string.Format("当前密码: {0}", this.config.Password);
+            this.lblDuration.Content = string.Format("当前间隔: {0}", this.config.Duration);
+            this.sldDuration.Value = Convert.ToDouble(this.config.Duration);
+            this.cbDesktop.IsChecked = this.config.IsShowDesktop;
+            this.cbAutoStart.IsChecked = this.config.IsAutoStart;
+        }
         private void InitNofityIcon()
         {
             this.notifyIcon = new Forms.NotifyIcon();
@@ -104,21 +105,15 @@ namespace ProtectEye
             exitItem.Text = "退出";
             exitItem.Click += (sender, e) =>
             {
-                this.Exit();                
+                this.Exit();
             };
             menu.MenuItems.Add(settingItem);
             menu.MenuItems.Add(exitItem);
             this.notifyIcon.ContextMenu = menu;
         }
-
-        private void HideNotifyIcon()
+        private void InitMonitorTimer()
         {
-            this.notifyIcon.Visible = false;
-        }
-        private void InitTimer()
-        {
-            this.timer = new DispatcherTimer();
-            this.timer.Tick += (sender, e) =>
+            this.timerMonitor.Tick += (sender, e) =>
             {
                 // 
                 this.StopMonitor();
@@ -129,12 +124,34 @@ namespace ProtectEye
             };
 
         }
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void InitAutoClickTimer()
+        {
+            int autoClickDuration = 5;//5秒
+
+            timerAutoClick.Interval = TimeSpan.FromSeconds(1);
+            timerAutoClick.Tick += (sender, e) =>
+            {
+                if (autoClickDuration > 0)
+                {
+                    this.btnStart.Content = String.Format("开始({0})", autoClickDuration--);
+                }
+                else
+                {
+                    this.StopAutoClick();
+                    this.doStart();
+                }
+            };
+            timerAutoClick.Start();
+        }
+        private void HideNotifyIcon()
+        {
+            this.notifyIcon.Visible = false;
+        }
+       private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
         }
-
-        private void btnStart_Click(object sender, RoutedEventArgs e)
+        private void doStart()
         {
             if (true == this.cbPassword.IsChecked)
             {
@@ -155,21 +172,29 @@ namespace ProtectEye
             this.Hide();
             this.StartMonitor();
         }
+        private void btnStart_Click(object sender, RoutedEventArgs e)
+        {
+            this.doStart();
+        }
 
         private void StartMonitor()
         {
             this.StopMonitor();
             Console.WriteLine("start monitor");
             this.notifyIcon.ShowBalloonTip(5000, "Y(^_^)Y", string.Format("{0}钟之后要休息下~", this.config.Duration), Forms.ToolTipIcon.Info);
-            this.timer.Interval = TimeSpan.FromMinutes(Convert.ToDouble(this.config.Duration));
-            this.timer.Interval = TimeSpan.FromSeconds(5f);
-            this.timer.Start();
+            this.timerMonitor.Interval = TimeSpan.FromMinutes(Convert.ToDouble(this.config.Duration));
+            this.timerMonitor.Interval = TimeSpan.FromSeconds(3f);
+            this.timerMonitor.Start();
         }
 
         private void StopMonitor()
         {
             Console.WriteLine("stop monitor");
-            this.timer.Stop();
+            this.timerMonitor.Stop();
+        }
+        private void StopAutoClick(){
+            this.timerAutoClick.Stop();
+            this.btnStart.Content = "开始";
         }
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
@@ -178,6 +203,9 @@ namespace ProtectEye
 
         private void checkbox_Checked(object sender, RoutedEventArgs e)
         {
+            // 有点击是就停止自动点击计时器
+            this.StopAutoClick();
+            //
             if (sender == this.cbPassword)
             {
                 this.tbPassword.IsEnabled = (bool)this.cbPassword.IsChecked;

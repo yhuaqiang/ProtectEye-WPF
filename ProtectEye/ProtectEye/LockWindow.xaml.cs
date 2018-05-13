@@ -23,7 +23,7 @@ namespace ProtectEye
     {
         private Config config;
         private DispatcherTimer timer;
-        private int waitDuration = 10;
+        private int waitDuration = 20;
         private int tmpWaitDuration = 0;
 
         public DoMonitor doMonitor;
@@ -48,8 +48,18 @@ namespace ProtectEye
 
         private void Init()
         {
-            this.WindowState = System.Windows.WindowState.Maximized;
+            this.WindowState = WindowState.Maximized;
+            this.tbPassword.Visibility = Visibility.Hidden;
             this.btnUnlock.Width = 0;
+            this.MouseDoubleClick += (sender, e) =>
+            {
+                this.tbPassword.Visibility = this.tbPassword.IsVisible ? Visibility.Hidden : Visibility.Visible;
+                this.tbPassword.Focus();
+            };
+            this.Closing += (sender, e) =>
+            {
+                e.Cancel = true;
+            };
         }
         private void InitTimer()
         {
