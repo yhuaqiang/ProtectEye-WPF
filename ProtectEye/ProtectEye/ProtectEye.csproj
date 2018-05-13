@@ -62,7 +62,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="hook\Hooker.cs" />
+    <Compile Include="hook\MouseHook.cs" />
     <Compile Include="util\Utils.cs" />
+    <Compile Include="hook\Win32Api.cs" />
     <Page Include="LockWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

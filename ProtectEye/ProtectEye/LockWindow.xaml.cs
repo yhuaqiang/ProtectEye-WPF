@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using ProtectEye.hook;
 using ProtectEye.util;
 
 namespace ProtectEye
@@ -102,7 +103,7 @@ namespace ProtectEye
                 this.timer.Start();
                 this.tbPassword.Focus();
                 //
-                Hooker.StartHook();
+                Hooker.GetInstance().StartHook();
             }
             catch (Exception ex)
             {
@@ -119,7 +120,7 @@ namespace ProtectEye
             }
             finally
             {
-                Hooker.StopHook();
+                Hooker.GetInstance().StopHook();
             }
             try
             {
