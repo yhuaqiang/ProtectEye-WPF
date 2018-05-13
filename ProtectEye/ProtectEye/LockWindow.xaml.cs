@@ -23,7 +23,7 @@ namespace ProtectEye
     {
         private Config config;
         private DispatcherTimer timer;
-        private int waitDuration = 20;
+        private int waitDuration = 600; // 秒
         private int tmpWaitDuration = 0;
 
         public DoMonitor doMonitor;
@@ -48,7 +48,7 @@ namespace ProtectEye
 
         private void Init()
         {
-            this.WindowState = WindowState.Maximized;
+            this.FullScreen();
             this.tbPassword.Visibility = Visibility.Hidden;
             this.btnUnlock.Width = 0;
             this.MouseDoubleClick += (sender, e) =>
@@ -61,25 +61,33 @@ namespace ProtectEye
                 e.Cancel = true;
             };
         }
+
+        private void FullScreen()
+        {
+            this.ShowInTaskbar = false;
+            this.Topmost = true;
+            this.WindowState = WindowState.Maximized;
+        }
         private void InitTimer()
         {
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromSeconds(1);
             this.timer.Tick += (sender, e) =>
             {
-                this.WaitForClose();
+                this.RefreshCountDown();
             };
         }
-        private void WaitForClose()
+        private void RefreshCountDown()
         {
+            // 总是全屏/置顶
+            this.FullScreen();
             //Console.WriteLine("{0} sencods to close", this.tmpWaitDuration);
             int m = this.tmpWaitDuration / 60;
             int s = this.tmpWaitDuration % 60;
             this.lblCountDown.Content = string.Format("{0:00}:{1:00}", m, s);
             if (--this.tmpWaitDuration < 0)
             {
-                this.Unlock();
-
+                //this.Unlock();
             }
         }
         public void Lock()
@@ -89,7 +97,7 @@ namespace ProtectEye
                 Console.WriteLine("lock");
                 this.Show();
                 this.tmpWaitDuration = this.waitDuration;
-                this.WaitForClose();
+                this.RefreshCountDown();
                 this.timer.Start();
                 this.tbPassword.Focus();
             }
@@ -97,7 +105,6 @@ namespace ProtectEye
             {
             }
         }
-
         public void Unlock()
         {
             try
@@ -120,7 +127,6 @@ namespace ProtectEye
 
             }
         }
-
         private void btnUnlock_Click(object sender, RoutedEventArgs e)
         {
             string pswd = this.tbPassword.Text.Trim();
