@@ -94,7 +94,7 @@ namespace ProtectEye
             exitItem.Click += (sender, e) =>
             {
                 this.Close();
-                
+                System.Environment.Exit(System.Environment.ExitCode);
             };
             menu.MenuItems.Add(settingItem);
             menu.MenuItems.Add(exitItem);
@@ -141,18 +141,18 @@ namespace ProtectEye
             this.config.IsAutoStart = (bool)this.cbAutoStart.IsChecked;
             ConfigHelper.Save(this.config);
             this.Hide();
+            this.ShowNotifyIcon();//在StartMonitor之前,否则气泡不显示
             this.StartMonitor();
-            this.ShowNotifyIcon();
         }
 
         private void StartMonitor()
         {
             this.StopMonitor();
             Console.WriteLine("start monitor");
+            this.notifyIcon.ShowBalloonTip(5000, "Y(^_^)Y", string.Format("{0}钟之后要休息下~", this.config.Duration), Forms.ToolTipIcon.Info);
             this.timer.Interval = TimeSpan.FromMinutes(Convert.ToDouble(this.config.Duration));
             this.timer.Interval = TimeSpan.FromSeconds(5f);
-            this.timer.Start();
-            this.notifyIcon.ShowBalloonTip(5000, "Y(^_^)Y", string.Format("{0}钟之后要休息下~", this.config.Duration), Forms.ToolTipIcon.Info);
+            //this.timer.Start();
         }
 
         private void StopMonitor()
