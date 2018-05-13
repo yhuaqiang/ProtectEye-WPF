@@ -62,8 +62,8 @@ namespace ProtectEye
             this.Closing += (sender, e) =>
             {
                 Console.WriteLine("main window closing");
-                this.HideNotifyIcon();
-                System.Environment.Exit(System.Environment.ExitCode);
+                e.Cancel = true;
+                this.Hide();
             };
             //向子窗口传递委托
             this.lockWindow = new LockWindow(this.config);
@@ -76,6 +76,7 @@ namespace ProtectEye
         private void InitNofityIcon()
         {
             this.notifyIcon = new Forms.NotifyIcon();
+            this.notifyIcon.Visible = true;
             this.notifyIcon.Icon = Properties.Resources.System;
             this.notifyIcon.MouseClick += (sender, e) =>
             {
@@ -95,18 +96,13 @@ namespace ProtectEye
             exitItem.Text = "退出";
             exitItem.Click += (sender, e) =>
             {
-                this.Close();
-                
+                this.Exit();                
             };
             menu.MenuItems.Add(settingItem);
             menu.MenuItems.Add(exitItem);
             this.notifyIcon.ContextMenu = menu;
         }
 
-        private void ShowNotifyIcon()
-        {
-            this.notifyIcon.Visible = true;
-        }
         private void HideNotifyIcon()
         {
             this.notifyIcon.Visible = false;
@@ -148,7 +144,6 @@ namespace ProtectEye
             ConfigHelper.Save(this.config);
             //
             this.Hide();
-            this.ShowNotifyIcon();//在StartMonitor之前,否则气泡不显示
             this.StartMonitor();
         }
 
@@ -169,7 +164,6 @@ namespace ProtectEye
         }
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            this.ShowNotifyIcon();
             this.Hide();
         }
 
@@ -196,7 +190,11 @@ namespace ProtectEye
         }
 
 
-
+        private void Exit()
+        {
+            this.HideNotifyIcon();
+            System.Environment.Exit(System.Environment.ExitCode);
+        }
 
     }
 }
