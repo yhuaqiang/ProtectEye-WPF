@@ -7,7 +7,8 @@ namespace ProtectEye.conf
     public class Config
     {
         private string password = "我认怂";
-        private int duration = 50;
+        private int duration = 30; // 30分钟
+        private int locking = 5;// 5分钟
         private bool desktop = true;
         private bool autoStart = false;
 
@@ -32,6 +33,18 @@ namespace ProtectEye.conf
             set
             {
                 this.duration = value;
+            }
+        }
+
+        public int Locking
+        {
+            get
+            {
+                return this.locking;
+            }
+            set
+            {
+                this.locking = value;
             }
         }
 

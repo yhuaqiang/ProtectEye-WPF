@@ -25,7 +25,7 @@ namespace ProtectEye
     {
         private Config config;
         private DispatcherTimer timer;
-        private int waitDuration = 600; // 秒
+        private int waitDuration = 0; 
         private int tmpWaitDuration = 0;
 
         public Utils.DoMonitor doMonitor;
@@ -98,6 +98,7 @@ namespace ProtectEye
             {
                 Console.WriteLine("lock");
                 this.Show();
+                this.waitDuration = this.config.Locking * 60;
                 this.tmpWaitDuration = this.waitDuration;
                 this.RefreshCountDown();
                 this.timer.Start();

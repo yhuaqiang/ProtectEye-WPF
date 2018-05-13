@@ -76,6 +76,17 @@ namespace ProtectEye.conf
             }
             try
             {
+                val = ProfileReadValue("locking");
+                if (!String.IsNullOrEmpty(val))
+                {
+                    c.Locking = Convert.ToInt32(val);
+                }
+            }
+            catch (Exception)
+            {
+            }
+            try
+            {
                 val = ProfileReadValue("desktop");
                 if (!String.IsNullOrEmpty(val))
                 {
@@ -106,6 +117,7 @@ namespace ProtectEye.conf
             //
             ProfileWriteValue("password", config.Password);
             ProfileWriteValue("duration", config.Duration.ToString());
+            ProfileWriteValue("locking", config.Locking.ToString());
             ProfileWriteValue("desktop", config.IsShowDesktop.ToString());
             ProfileWriteValue("autostart", config.IsAutoStart.ToString());
 
