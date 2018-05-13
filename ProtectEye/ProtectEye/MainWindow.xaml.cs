@@ -33,7 +33,7 @@ namespace ProtectEye
 
         private Config config;
 
-        private LockWindow lockWindow = new LockWindow();
+        private LockWindow lockWindow;
 
 
         public MainWindow()
@@ -56,7 +56,15 @@ namespace ProtectEye
             this.lblPassword.Content = string.Format("当前密码: {0}", this.config.Password);
             this.lblDuration.Content = string.Format("当前间隔: {0}", this.config.Duration);
             this.sldDuration.Value = Convert.ToDouble(this.config.Duration);
-            //
+            this.cbDesktop.IsChecked = this.config.IsShowDesktop;
+            this.cbAutoStart.IsChecked = this.config.IsAutoStart;
+            //事件
+            this.Closing += (sender, e) =>
+            {
+                this.notifyIcon.Visible = false;
+            };
+            //向子窗口传递委托
+            this.lockWindow = new LockWindow(this.config);
             this.lockWindow.doMonitor = () =>
             {
                 this.StartMonitor();
@@ -85,8 +93,8 @@ namespace ProtectEye
             exitItem.Text = "退出";
             exitItem.Click += (sender, e) =>
             {
-                this.notifyIcon.Visible = false;
                 this.Close();
+                
             };
             menu.MenuItems.Add(settingItem);
             menu.MenuItems.Add(exitItem);

@@ -13,5 +13,14 @@ namespace ProtectEye
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            Application.Current.DispatcherUnhandledException += (sender, e) =>
+            {
+                e.Handled = true;
+                Console.WriteLine("exception occurs: =============>\n" + e.Exception.Message);
+
+            };
+        }
     }
 }

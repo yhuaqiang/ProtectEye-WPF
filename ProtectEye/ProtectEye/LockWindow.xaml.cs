@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProtectEye.conf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace ProtectEye
     /// </summary>
     public partial class LockWindow : Window
     {
+        private Config config;
         private DispatcherTimer timer;
         private int waitDuration = 10;
         private int tmpWaitDuration = 0;
@@ -31,6 +33,13 @@ namespace ProtectEye
             InitializeComponent();
         }
 
+        public LockWindow(Config config)
+        {
+            InitializeComponent();
+            //
+            this.config = config;
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.Init();
@@ -40,6 +49,7 @@ namespace ProtectEye
         private void Init()
         {
             this.WindowState = System.Windows.WindowState.Maximized;
+            this.btnUnlock.Width = 0;
         }
         private void InitTimer()
         {
@@ -52,7 +62,7 @@ namespace ProtectEye
         }
         private void WaitForClose()
         {
-            Console.WriteLine("{0} sencods to close", this.tmpWaitDuration);
+            //Console.WriteLine("{0} sencods to close", this.tmpWaitDuration);
             int m = this.tmpWaitDuration / 60;
             int s = this.tmpWaitDuration % 60;
             this.lblCountDown.Content = string.Format("{0:00}:{1:00}", m, s);
@@ -64,20 +74,54 @@ namespace ProtectEye
         }
         public void Lock()
         {
-            this.Show();
-            Console.WriteLine("lock");
-            this.tmpWaitDuration = this.waitDuration;
-            this.WaitForClose();
-            this.timer.Start();
+            try
+            {
+                Console.WriteLine("lock");
+                this.Show();
+                this.tmpWaitDuration = this.waitDuration;
+                this.WaitForClose();
+                this.timer.Start();
+                this.tbPassword.Focus();
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         public void Unlock()
         {
-            Console.WriteLine("unlock");
-            this.timer.Stop();
-            this.Hide();
-            //
-            this.doMonitor();
+            try
+            {
+                Console.WriteLine("unlock");
+                this.tbPassword.Clear();
+                this.timer.Stop();
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+            }
+            try
+            {
+                //调用委托,执行父窗口的事件
+                this.doMonitor();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void btnUnlock_Click(object sender, RoutedEventArgs e)
+        {
+            string pswd = this.tbPassword.Text.Trim();
+            if (pswd == this.config.Password)
+            {
+                this.Unlock();
+            }
+            else
+            {
+                Console.WriteLine("password incorrect");
+            }
         }
     }
 }

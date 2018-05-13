@@ -31,8 +31,8 @@
                 </Grid>
             </GroupBox>
             <Grid >
-                <Button x:Name="btnStart" Content="开始" Margin="28,20,209,-52" Click="btnStart_Click" ></Button>
-                <Button x:Name="btnClose" Content="关闭" Margin="184,20,56,-52" Click="btnClose_Click" ></Button>
+                <Button x:Name="btnStart" Content="开始" IsDefault="True" Margin="28,20,209,-52" Click="btnStart_Click" ></Button>
+                <Button x:Name="btnClose" Content="关闭" IsCancel="True" Margin="184,20,56,-52" Click="btnClose_Click" ></Button>
             </Grid>
 
         </StackPanel>
