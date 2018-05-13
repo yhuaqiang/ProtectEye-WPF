@@ -3,12 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ms="http://namespaces.mindscape.co.nz/wpf" x:Class="ProtectEye.MainWindow"
         Title="MainWindow" Height="531" Width="431" WindowStyle="None" 
-    ResizeMode="NoResize"
+        ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown" Loaded="Window_Loaded"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown" Loaded="Window_Loaded" 
         >
-    <Grid Background="#33000000">
-        <StackPanel Margin="50,30">
+    <Grid Background="#33000000" >
+        <StackPanel Margin="50,20">
+            <Label Content="护眼小贴士Y^-^Y" HorizontalAlignment="Center" FontSize="20"  Height="40"/>
             <GroupBox Header="解锁密码" Height="138">
                 <Grid>
                     <CheckBox x:Name="cbPassword" Content="更改解锁密码" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" Height="27" Width="102" Checked="checkbox_Checked" Unchecked="checkbox_Checked"/>

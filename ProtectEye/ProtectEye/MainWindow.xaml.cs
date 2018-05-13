@@ -61,7 +61,9 @@ namespace ProtectEye
             //事件
             this.Closing += (sender, e) =>
             {
-                this.notifyIcon.Visible = false;
+                Console.WriteLine("main window closing");
+                this.HideNotifyIcon();
+                System.Environment.Exit(System.Environment.ExitCode);
             };
             //向子窗口传递委托
             this.lockWindow = new LockWindow(this.config);
@@ -94,7 +96,7 @@ namespace ProtectEye
             exitItem.Click += (sender, e) =>
             {
                 this.Close();
-                System.Environment.Exit(System.Environment.ExitCode);
+                
             };
             menu.MenuItems.Add(settingItem);
             menu.MenuItems.Add(exitItem);
@@ -104,6 +106,10 @@ namespace ProtectEye
         private void ShowNotifyIcon()
         {
             this.notifyIcon.Visible = true;
+        }
+        private void HideNotifyIcon()
+        {
+            this.notifyIcon.Visible = false;
         }
         private void InitTimer()
         {
@@ -140,6 +146,7 @@ namespace ProtectEye
             this.config.IsShowDesktop = (bool)this.cbDesktop.IsChecked;
             this.config.IsAutoStart = (bool)this.cbAutoStart.IsChecked;
             ConfigHelper.Save(this.config);
+            //
             this.Hide();
             this.ShowNotifyIcon();//在StartMonitor之前,否则气泡不显示
             this.StartMonitor();
