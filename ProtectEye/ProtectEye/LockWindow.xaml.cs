@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using ProtectEye.util;
 
 namespace ProtectEye
 {
@@ -26,7 +27,7 @@ namespace ProtectEye
         private int waitDuration = 600; // 秒
         private int tmpWaitDuration = 0;
 
-        public DoMonitor doMonitor;
+        public Utils.DoMonitor doMonitor;
 
         public LockWindow()
         {

@@ -1,6 +1,6 @@
 ﻿#MainWindow
 	样式
-
+	单例运行
 
 #LockWindow
 	样式

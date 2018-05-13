@@ -33,6 +33,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>ProtectEye.App</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>System.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mindscape.WpfElements, Version=7.0.34.23280, Culture=neutral, PublicKeyToken=0a92c4b7d9c14aa4, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -56,6 +62,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="util\Utils.cs" />
     <Page Include="LockWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -112,6 +119,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="TDB.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="System.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -19,9 +19,6 @@ using System.Windows.Threading;
 namespace ProtectEye
 {
 
-    // 通过委托实现消息传递,注意位置
-    public delegate void DoMonitor();
-
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
