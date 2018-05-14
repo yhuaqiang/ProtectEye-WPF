@@ -68,7 +68,11 @@ namespace ProtectEye.conf
                 val = ProfileReadValue("duration");
                 if (!String.IsNullOrEmpty(val))
                 {
-                    c.Duration = Convert.ToInt32(val);
+                    int v = Convert.ToInt32(val);
+                    if (v > 0)
+                    {
+                        c.Duration = v;
+                    }
                 }
             }
             catch (Exception)
@@ -79,7 +83,11 @@ namespace ProtectEye.conf
                 val = ProfileReadValue("locking");
                 if (!String.IsNullOrEmpty(val))
                 {
-                    c.Locking = Convert.ToInt32(val);
+                    int v = Convert.ToInt32(val);
+                    if (v > 0)
+                    {
+                        c.Locking = v;
+                    }
                 }
             }
             catch (Exception)

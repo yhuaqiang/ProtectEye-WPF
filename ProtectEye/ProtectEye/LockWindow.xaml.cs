@@ -89,7 +89,7 @@ namespace ProtectEye
             this.lblCountDown.Content = string.Format("{0:00}:{1:00}", m, s);
             if (--this.tmpWaitDuration < 0)
             {
-                //this.Unlock();
+                this.Unlock();
             }
         }
         public void Lock()
