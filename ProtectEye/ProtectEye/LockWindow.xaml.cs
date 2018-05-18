@@ -25,7 +25,7 @@ namespace ProtectEye
     {
         private Config config;
         private DispatcherTimer timer;
-        private int waitDuration = 0; 
+        private int waitDuration = 0;
         private int tmpWaitDuration = 0;
 
         public Utils.DoMonitor doMonitor;
@@ -55,8 +55,14 @@ namespace ProtectEye
             this.btnUnlock.Width = 0;
             this.MouseDoubleClick += (sender, e) =>
             {
-                this.tbPassword.Visibility = this.tbPassword.IsVisible ? Visibility.Hidden : Visibility.Visible;
-                this.tbPassword.Focus();
+                this.toggleUnlock();
+            };
+            this.KeyUp += (sender, e) =>
+            {
+                if (e.Key == Key.LeftShift || e.Key == Key.RightShift || e.Key == Key.Escape)
+                {
+                    this.toggleUnlock();
+                }
             };
             this.Closing += (sender, e) =>
             {
@@ -64,11 +70,23 @@ namespace ProtectEye
             };
         }
 
+        private void toggleUnlock()
+        {
+            this.tbPassword.Visibility = this.tbPassword.IsVisible ? Visibility.Hidden : Visibility.Visible;
+            this.tbPassword.Focus();
+        }
+
         private void FullScreen()
         {
             this.ShowInTaskbar = false;
             this.Topmost = true;
-            this.WindowState = WindowState.Maximized;
+            this.WindowState = WindowState.Normal;
+            this.WindowStyle = WindowStyle.None;
+            this.ResizeMode = ResizeMode.NoResize;
+            this.Left = this.Top = 0;
+            this.Width = SystemParameters.PrimaryScreenWidth;
+            this.Height = SystemParameters.PrimaryScreenHeight;
+            this.Activate();
         }
         private void InitTimer()
         {
