@@ -59,7 +59,7 @@ namespace ProtectEye
             };
             this.KeyUp += (sender, e) =>
             {
-                if (e.Key == Key.LeftShift || e.Key == Key.RightShift || e.Key == Key.Escape)
+                if (e.Key == Key.Enter || e.Key == Key.Escape)
                 {
                     this.toggleUnlock();
                 }
