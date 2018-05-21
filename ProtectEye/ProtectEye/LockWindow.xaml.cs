@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using ProtectEye.hook;
 using ProtectEye.util;
+using System.Reflection;
 
 namespace ProtectEye
 {
@@ -40,16 +41,19 @@ namespace ProtectEye
             InitializeComponent();
             //
             this.config = config;
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+            //
             this.Init();
             this.InitTimer();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+        
+        }
+
         private void Init()
         {
+            Console.WriteLine("lockwindow init...");
             this.FullScreen();
             this.tbPassword.Visibility = Visibility.Hidden;
             this.btnUnlock.Width = 0;
@@ -115,17 +119,24 @@ namespace ProtectEye
             try
             {
                 Console.WriteLine("lock");
-                this.Show();
+                // 显示桌面
+                if (this.config.IsShowDesktop)
+                {
+                    this.ToggleDesktop(true);
+                }
+
                 this.waitDuration = this.config.Locking * 60;
                 this.tmpWaitDuration = this.waitDuration;
                 this.RefreshCountDown();
                 this.timer.Start();
                 this.tbPassword.Visibility = Visibility.Hidden;
+                this.Show();
                 //
                 Hooker.GetInstance().StartHook();
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.StackTrace);
             }
         }
         public void Unlock()
@@ -133,9 +144,18 @@ namespace ProtectEye
             try
             {
                 Console.WriteLine("unlock");
+                this.Hide();
                 this.tbPassword.Clear();
                 this.timer.Stop();
-                this.Hide();
+
+                if (this.config.IsShowDesktop)
+                {
+                    this.ToggleDesktop(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
             }
             finally
             {
@@ -148,7 +168,7 @@ namespace ProtectEye
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex.StackTrace);
             }
         }
         private void btnUnlock_Click(object sender, RoutedEventArgs e)
@@ -162,6 +182,12 @@ namespace ProtectEye
             {
                 Console.WriteLine("password incorrect");
             }
+        }
+        private void ToggleDesktop(bool show)
+        {
+            Type oleType = Type.GetTypeFromProgID("Shell.Application");
+            object oleObject = Activator.CreateInstance(oleType);
+            oleType.InvokeMember("ToggleDesktop", BindingFlags.InvokeMethod, null, oleObject, null);
         }
     }
 }

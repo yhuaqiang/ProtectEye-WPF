@@ -76,10 +76,6 @@ namespace ProtectEye
             this.lockWindow = new LockWindow(this.config);
             this.lockWindow.doMonitor = () =>
             {
-                if (this.config.IsShowDesktop)
-                {
-                    this.ToggleDesktop(false);
-                }
                 this.StartMonitor();
             };
         }
@@ -129,11 +125,6 @@ namespace ProtectEye
             {
                 // 
                 this.StopMonitor();
-                // 显示桌面
-                if (this.config.IsShowDesktop)
-                {
-                    this.ToggleDesktop(true);
-                }
                 //
                 this.lockWindow.Lock();
                 //
@@ -253,11 +244,6 @@ namespace ProtectEye
             this.HideNotifyIcon();
             System.Environment.Exit(System.Environment.ExitCode);
         }
-        private void ToggleDesktop(bool show)
-        {
-            Type oleType = Type.GetTypeFromProgID("Shell.Application");
-            object oleObject = Activator.CreateInstance(oleType);
-            oleType.InvokeMember("ToggleDesktop", BindingFlags.InvokeMethod, null, oleObject, null);
-        }
+
     }
 }

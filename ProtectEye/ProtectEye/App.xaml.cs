@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -18,7 +19,7 @@ namespace ProtectEye
             Application.Current.DispatcherUnhandledException += (sender, e) =>
             {
                 e.Handled = true;
-                Console.WriteLine("exception occurs: =============>\n" + e.Exception.Message);
+                System.IO.File.AppendAllText("logs.txt", "exception occurs: =============>\n" + e.Exception.StackTrace, Encoding.UTF8);
 
             };
         }
