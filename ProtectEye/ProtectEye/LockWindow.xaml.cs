@@ -91,6 +91,7 @@ namespace ProtectEye
             this.Width = SystemParameters.PrimaryScreenWidth;
             this.Height = SystemParameters.PrimaryScreenHeight;
             this.Activate();
+            this.Focus();
         }
         private void InitTimer()
         {
